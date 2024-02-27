@@ -12,9 +12,9 @@ import Modal from "antd/es/modal/Modal";
 
 import MetaMaskImage from "../../../public/svg/metamask.svg";
 import GithubImage from "../../../public/svg/github-mark.svg";
-import VideoUploadComponent from "@/components/modal/fileUpload";
-import ImageUploadComponent from "@/components/modal/imageUpload";
-import AudioUpload from "@/components/modal/audioUpload";
+import AudioUpload from "@/components/modal/mp3Upload";
+import VideoUpload from "@/components/modal/VideoUpload";
+import ImageUpload from "@/components/modal/_imageUpload";
 
 const words: string[] = [
   "developers.",
@@ -45,9 +45,10 @@ export default function HomepageHeader() {
   const [address, setAddress] = useState('');
   const [balance, setBalance] = useState(null);
 
-  //
+  //mint video, image and audio,
   const [text, setText] = useState('')
 
+  const [formData, setFormData] = useState(new FormData());
 
   // state of the scroll position and header height
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -118,10 +119,6 @@ export default function HomepageHeader() {
     }
   }, [headerRef.current]);
 
-  const handleAuthModal = () => {
-    setIsShowAuthModalOpen(true)
-  }
-
   const handleShowAuthModalCancel: () => void = () => {
     setIsShowAuthModalOpen(false);
   };
@@ -129,10 +126,6 @@ export default function HomepageHeader() {
   const handleShowMindModalCancel = () => {
     setIsShowModelMintModalOpen(false)
   }
-
-  const handleShowSubstrateModalCancel = () => {
-    setIsShowSubstrateConnectModalOpen(false);
-  };
 
   const onGitHubLoginSuccess = (response: any) => {
 
@@ -245,9 +238,24 @@ export default function HomepageHeader() {
     setIsShowModelMintModalOpen(true)
   }
 
-  const onChange = () => {
+  const handleAudioUpload = (file: File) => {
+    // Handle the uploaded audio file here
+    formData.append('audio', file)
+  };
 
+  const handleImageUpload = (file: File | null) => {
+    if (file) {
+      formData.append('image', file)
+    }
   }
+
+  const handleUploadButton = () => {
+    formData.append('text', text);
+  }
+
+  const handleFormDataUpdate = (updatedFormData: FormData) => {
+    setFormData(updatedFormData);
+  };
 
   return (
     <header ref={headerRef} className={` dark:bg-[#161616] p-[4rem] py-32 text-center overflow-hidden ${getHeaderClasses(scrollPosition, headerHeight)} duration-500`} >
@@ -281,11 +289,6 @@ export default function HomepageHeader() {
         </div>
       </div>
 
-      {
-        isShowSubstrateConnectModalOpen && <Modal open={isShowSubstrateConnectModalOpen} onCancel={handleShowSubstrateModalCancel} footer={null} width={500}>
-          <button onClick={getChainInfo}>Get Chain Info</button>
-        </Modal>
-      }
       {
         isShowAuthModalOpen &&
         <Modal open={isShowAuthModalOpen} onCancel={handleShowAuthModalCancel} footer={null} width={500}>
@@ -444,14 +447,17 @@ export default function HomepageHeader() {
             <label>Text:</label>
             <input value={text} onChange={({ target: { value } }) => setText(value)} className="p-2 mb-2" />
 
-            <VideoUploadComponent />
+            <VideoUpload formData={formData} onFormDataUpdate={handleFormDataUpdate} />
 
             <div className="flex items-center">
-              <ImageUploadComponent />
-              <AudioUpload onChange={onChange} />
+
+              <ImageUpload onImageSelect={handleImageUpload} />
+
+              <AudioUpload onUpload={handleAudioUpload} />
+
             </div>
 
-            <div className=' bg-blue-700 rounded-lg shadow-lg hover:shadow-2xl text-center hover:bg-blue-600 duration-200 text-white hover:text-white font-sans font-semibold justify-center px-2 py-2 hover:border-blue-300 hover:border-2 hover:border-solid cursor-pointer' onClick={handleGetStartedButton}>
+            <div className=' bg-blue-700 rounded-lg shadow-lg hover:shadow-2xl text-center hover:bg-blue-600 duration-200 text-white hover:text-white font-sans font-semibold justify-center px-2 py-2 hover:border-blue-300 hover:border-2 hover:border-solid cursor-pointer' onClick={handleUploadButton}>
               Mint
             </div>
 
@@ -467,6 +473,5 @@ export const getHeaderClasses = (position: number, height: number) => {
   if (position > height / 2) {
     return "rounded-b-lg shadow-lg mx-5";
   }
-
   return "";
 };

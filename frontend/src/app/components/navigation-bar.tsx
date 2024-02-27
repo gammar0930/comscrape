@@ -1,6 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "next/navigation";
 import ThemeToggler from "./theme-toggler";
 import { ApiPromise, WsProvider } from '@polkadot/api';
@@ -82,49 +81,7 @@ export default function NavigationBar() {
     const [selectedChain, setSelectedChain] = React.useState('')
     const [isShowConnectWithSubstrateModalOpen, setIsShowConnectWithSubstrateModalOpen] = React.useState(false)
 
-    const asyncStripe = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
     const { abi: erc20ABI } = erc20ContractABI
-
-    const router = useRouter();
-
-    const handleClickPayButton = async () => {
-        try {
-
-            let amount = 1;
-            const stripe = await asyncStripe;
-            const res = await fetch("/api/stripe/session", {
-                method: "POST",
-                body: JSON.stringify({
-                    amount,
-                }),
-                headers: { "Content-Type": "application/json" },
-            });
-
-            const { sessionId } = await res.json();
-
-            const result = await stripe?.redirectToCheckout({ sessionId });
-
-            // Check if 'error' exists in the result
-            if (result?.error) {
-                router.push("/error");
-            }
-        } catch (err) {
-            router.push("/error");
-        }
-    };
-
-    const handleMetaMaskPayment = () => {
-        setIsShowWalletPaymentModal(true)
-    }
-
-    const onClick: MenuProps['onClick'] = ({ key }) => {
-        if (key === '1') {
-            handleClickPayButton()
-        }
-        if (key === '2') {
-            handleMetaMaskPayment()
-        }
-    };
 
     const handleWalletPaymentModalOpen = () => {
         setIsShowWalletPaymentModal(false)

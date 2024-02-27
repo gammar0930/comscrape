@@ -4,11 +4,8 @@ import classNames from "classnames";
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import ModulesService from "@/services/modules-service";
-import ModuleTile from "./components/module-tile/module-tile";
 import classes from "./modules.module.css";
 import SearchBar from "./components/search-bar";
-import Pagination from "react-paginate";
-import { modelList } from "../../services/modules-service";
 import ModuleTileProps from "./modelItem";
 
 const PolkadotWallet = dynamic(

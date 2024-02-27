@@ -1,5 +1,3 @@
-import { SAVE_TRANSACTION_FAILED } from "./type";
-
 const API_URL = 'http://127.0.0.1:8000'
 
 export const saveTransaction = async (payType: string, amount: number, destinationAddress: string, txHash: string) => {
