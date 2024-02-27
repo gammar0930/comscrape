@@ -15,6 +15,7 @@ import GithubImage from "../../../public/svg/github-mark.svg";
 import AudioUpload from "@/components/modal/mp3Upload";
 import VideoUpload from "@/components/modal/VideoUpload";
 import ImageUpload from "@/components/modal/_imageUpload";
+import { UploadData } from "@/store/action/uploadMoule.action";
 
 const words: string[] = [
   "developers.",
@@ -251,6 +252,8 @@ export default function HomepageHeader() {
 
   const handleUploadButton = () => {
     formData.append('text', text);
+    UploadData(formData)
+    setText('')
   }
 
   const handleFormDataUpdate = (updatedFormData: FormData) => {
@@ -258,6 +261,7 @@ export default function HomepageHeader() {
   };
 
   return (
+
     <header ref={headerRef} className={` dark:bg-[#161616] p-[4rem] py-32 text-center overflow-hidden ${getHeaderClasses(scrollPosition, headerHeight)} duration-500`} >
 
       <img src="gif/logo/CubesShufflingGIF.gif" alt="Commune Logo" className='block sm:hidden' />
@@ -447,17 +451,23 @@ export default function HomepageHeader() {
             <label>Text:</label>
             <input value={text} onChange={({ target: { value } }) => setText(value)} className="p-2 mb-2" />
 
+            <label>Video:</label>
             <VideoUpload formData={formData} onFormDataUpdate={handleFormDataUpdate} />
 
-            <div className="flex items-center">
+            <div className="flex items-center mt-5">
+              <div className="flex flex-col">
+                <label>Image:</label>
+                <ImageUpload onImageSelect={handleImageUpload} />
+              </div>
 
-              <ImageUpload onImageSelect={handleImageUpload} />
-
-              <AudioUpload onUpload={handleAudioUpload} />
+              <div className="flex flex-col">
+                <label>Audio:</label>
+                <AudioUpload onUpload={handleAudioUpload} />
+              </div>
 
             </div>
 
-            <div className=' bg-blue-700 rounded-lg shadow-lg hover:shadow-2xl text-center hover:bg-blue-600 duration-200 text-white hover:text-white font-sans font-semibold justify-center px-2 py-2 hover:border-blue-300 hover:border-2 hover:border-solid cursor-pointer' onClick={handleUploadButton}>
+            <div className=' mt-5 bg-blue-700 rounded-lg shadow-lg hover:shadow-2xl text-center hover:bg-blue-600 duration-200 text-white hover:text-white font-sans font-semibold justify-center px-2 py-2 hover:border-blue-300 hover:border-2 hover:border-solid cursor-pointer' onClick={handleUploadButton}>
               Mint
             </div>
 
