@@ -1,7 +1,8 @@
 from typing import Optional
 from pydantic import BaseModel
-from sqlalchemy import Column, Integer, String, Text, create_engine, MetaData
+from sqlalchemy import Column, Integer, String, Text, create_engine, MetaData, DateTime
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.sql import func
 
 DATABASE_URL = "postgresql+psycopg2://postgres:admin@127.0.0.1:5432/backend"
 
@@ -18,6 +19,7 @@ class FileModel(Base):
     image_filename = Column(String, index=True, nullable=False)
     audio_filename = Column(String, index=True, nullable=False)
     text_data = Column(Text)
-
+    time_created = Column(DateTime(timezone=True), server_default=func.now())
+    time_updated = Column(DateTime(timezone=True), onupdate=func.now())
 
 Base.metadata.create_all(bind=engine)

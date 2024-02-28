@@ -7,10 +7,9 @@ import os
 
 app = FastAPI()
 
-DATABASE_URL = "postgresql+psycopg2://postgres:admin@127.0.0.1:5432/backend"
+DATABASE_URL = "postgres://postgres:admin@127.0.0.1:5432/backend"
 
 database = Database(DATABASE_URL)
-
 
 @app.get("/")
 def root():
@@ -44,7 +43,7 @@ async def upload_files(
     audio_filename = os.path.join(upload_folder, audio.filename)
 
     print(
-        "-------------This is a data from frontend------------",
+        "This is the backend",
         video_filename,
         image_filename,
         audio_filename,
