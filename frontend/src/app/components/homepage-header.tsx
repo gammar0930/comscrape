@@ -31,7 +31,7 @@ const colour: string[] = [
   "text-[#ffef40] dark:text-[#FFF7A1]",
 ];
 
-const TITLE = "Commune Scrape";
+const TITLE = "Comscrape";
 const TAGLINE = "World's largest AI model";
 
 export default function HomepageHeader() {
@@ -42,7 +42,6 @@ export default function HomepageHeader() {
   const [reverse, setReverse] = useState(false);
   const [isShowAuthModalOpen, setIsShowAuthModalOpen] = useState(false)
   const [isShowModelMintModalOpen, setIsShowModelMintModalOpen] = useState(false)
-  const [isShowSubstrateConnectModalOpen, setIsShowSubstrateConnectModalOpen] = useState(false)
   const [address, setAddress] = useState('');
   const [balance, setBalance] = useState(null);
 

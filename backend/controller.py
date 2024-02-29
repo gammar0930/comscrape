@@ -1,9 +1,9 @@
 from sqlalchemy import select
 from databases import Database
-from models import FileModel, DATABASE_URL
+from models import FileModel
+import os
 
-database = Database(DATABASE_URL)
-
+database = Database(os.environ["DATABASE_URL"])
 
 async def save_file_data(
     video_filename: str, image_filename: str, audio_filename: str, text_data: str

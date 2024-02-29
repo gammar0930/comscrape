@@ -36,7 +36,9 @@ def get_image_video_text_embeddings(
 
     vertexai.init(project=project_id, location=location)
 
-    model = MultiModalEmbeddingModel.from_pretrained("multimodalembedding")
+    print('-------------------This is the video embedding-----------', project_id, location, image_path, video_path)
+
+    model = MultiModalEmbeddingModel.from_pretrained("multimodalembedding",)
     image = Image.load_from_file(image_path)
     video = Video.load_from_file(video_path)
 

@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 
-
 class FileModel(BaseModel):
     video_filename: str
     image_filename: str

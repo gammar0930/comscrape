@@ -3,22 +3,23 @@ from fastapi.responses import JSONResponse
 from controller import save_file_data, get_file_by_id, get_all_files
 from databases import Database
 import os
-import tempfile
-import shutil
 from embedding import get_image_video_text_embeddings
 from dotenv import load_dotenv
+from fastapi_sqlalchemy import DBSessionMiddleware, db
 
 # Load .env file
 load_dotenv()
 
 project_id = os.getenv("PROJECT_ID")
 location = os.getenv("LOCATION")
+database_url = os.getenv("DATABASE_URL")
 
 app = FastAPI()
 
-DATABASE_URL = "postgres://postgres:admin@127.0.0.1:5432/backend"
+database = Database(database_url)
 
-database = Database(DATABASE_URL)
+# to avoid csrftokenError
+app.add_middleware(DBSessionMiddleware, db_url=database_url)
 
 
 @app.get("/")
@@ -52,26 +53,20 @@ async def upload_files(
     image_filename = os.path.join(upload_folder, image.filename)
     audio_filename = os.path.join(upload_folder, audio.filename)
 
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as temp_video:
-        shutil.copyfileobj(video.file, temp_video)
-
     # Example: Get embeddings using OpenAI API
-    # Save video file
     get_image_video_text_embeddings(
         project_id, location, image_filename, video_filename, text
     )
 
-    video_filename = video.filename
+    # Save video file
     with open(video_filename, "wb") as video_file:
         video_file.write(video.file.read())
 
     # Save image file
-    image_filename = image.filename
     with open(image_filename, "wb") as image_file:
         image_file.write(image.file.read())
 
     # Save audio file
-    audio_filename = audio.filename
     with open(audio_filename, "wb") as audio_file:
         audio_file.write(audio.file.read())
 

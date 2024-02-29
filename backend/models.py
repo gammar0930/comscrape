@@ -4,13 +4,19 @@ from sqlalchemy import Column, Integer, String, Text, create_engine, MetaData, D
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 
-DATABASE_URL = "postgresql+psycopg2://postgres:admin@127.0.0.1:5432/backend"
+# My code
+import os, sys
+from dotenv import load_dotenv
 
-engine = create_engine(DATABASE_URL)
+# Load .env file
+load_dotenv()
+
+database_url = os.getenv("DATABASE_URL")
+
+engine = create_engine(database_url)
 metadata = MetaData()
 
 Base = declarative_base()
-
 
 class FileModel(Base):
     __tablename__ = "files"
@@ -21,5 +27,6 @@ class FileModel(Base):
     text_data = Column(Text)
     time_created = Column(DateTime(timezone=True), server_default=func.now())
     time_updated = Column(DateTime(timezone=True), onupdate=func.now())
+
 
 Base.metadata.create_all(bind=engine)
