@@ -1,15 +1,25 @@
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
-from typing import Optional
 from fastapi.responses import JSONResponse
 from controller import save_file_data, get_file_by_id, get_all_files
 from databases import Database
 import os
+import tempfile
+import shutil
+from embedding import get_image_video_text_embeddings
+from dotenv import load_dotenv
+
+# Load .env file
+load_dotenv()
+
+project_id = os.getenv("PROJECT_ID")
+location = os.getenv("LOCATION")
 
 app = FastAPI()
 
 DATABASE_URL = "postgres://postgres:admin@127.0.0.1:5432/backend"
 
 database = Database(DATABASE_URL)
+
 
 @app.get("/")
 def root():
@@ -42,15 +52,15 @@ async def upload_files(
     image_filename = os.path.join(upload_folder, image.filename)
     audio_filename = os.path.join(upload_folder, audio.filename)
 
-    print(
-        "This is the backend",
-        video_filename,
-        image_filename,
-        audio_filename,
-        text,
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as temp_video:
+        shutil.copyfileobj(video.file, temp_video)
+
+    # Example: Get embeddings using OpenAI API
+    # Save video file
+    get_image_video_text_embeddings(
+        project_id, location, image_filename, video_filename, text
     )
 
-    # Save video file
     video_filename = video.filename
     with open(video_filename, "wb") as video_file:
         video_file.write(video.file.read())

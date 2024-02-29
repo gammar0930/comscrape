@@ -8,11 +8,6 @@ import classes from "./modules.module.css";
 import SearchBar from "./components/search-bar";
 import ModuleTileProps from "./modelItem";
 
-const PolkadotWallet = dynamic(
-	() => import("@/app/api/polkadot/PolkadotWallet"),
-	{ ssr: false }
-);
-
 export default function () {
 	const [searchString, setSearchString] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
