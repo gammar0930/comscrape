@@ -2,13 +2,13 @@
 
 import classNames from "classnames";
 import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
 import ModulesService from "@/services/modules-service";
 import classes from "./modules.module.css";
 import SearchBar from "./components/search-bar";
 import ModuleTileProps from "./modelItem";
 
 export default function () {
+
 	const [searchString, setSearchString] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 	const itemsPerPage = 8;
@@ -31,8 +31,6 @@ export default function () {
 			updateDisplayedModules(filtered, currentPage);
 		}
 	}, [searchString, loadedModules]);
-
-	const pageCount = Math.ceil(filteredModules.length / itemsPerPage);
 
 	useEffect(() => {
 		async function fetchModules() {
@@ -177,27 +175,6 @@ export default function () {
 					<span>There is no data to display</span>
 				)}
 			</main>
-			{/* {filteredModules.length > 8 && (
-				<Pagination
-					pageCount={pageCount}
-					onPageChange={handlePageChange}
-					forcePage={currentPage - 1}
-					containerClassName="flex justify-center items-center space-x-3 my-4 text-lg dark:text-white"
-					pageLinkClassName="px-5 text-lg border rounded hover:bg-gray-200 transition-colors duration-200 py-3"
-					activeClassName="bg-blue-500 text-white py-3 rounded"
-					previousLabel={"previous"}
-					nextLabel={"next"}
-					breakLabel={"..."}
-					previousClassName={`mr-2 ${currentPage === 1
-						? "text-gray-500"
-						: "text-blue-500 hover:text-blue-700"
-						}`}
-					nextClassName={`${currentPage === pageCount
-						? "text-gray-500"
-						: "text-blue-500 hover:text-blue-700"
-						}`}
-				/>
-			)} */}
 		</>
 	);
 }

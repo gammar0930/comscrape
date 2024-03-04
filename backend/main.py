@@ -26,11 +26,9 @@ app.add_middleware(DBSessionMiddleware, db_url=database_url)
 def root():
     return {"message": "Hello World"}
 
-
 @app.on_event("startup")
 async def startup_db_client():
     await database.connect()
-
 
 @app.on_event("shutdown")
 async def shutdown_db_client():

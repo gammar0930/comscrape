@@ -2,10 +2,9 @@ import React from 'react';
 import { useSearchParams } from 'next/navigation';
 
 const Head = () => {
+
 	const searchparms = useSearchParams();
-
 	const name = searchparms.get("titlename");
-
 	const dynamicTitle = name ? `${name} | Commune` : "Commune";
 
 	return (
