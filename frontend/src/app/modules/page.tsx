@@ -6,6 +6,8 @@ import ModulesService from "@/services/modules-service";
 import classes from "./modules.module.css";
 import SearchBar from "./components/search-bar";
 import ModuleTileProps from "./modelItem";
+import { useDispatch, useSelector } from "react-redux";
+import { API_URL, getModules } from "@/store/action/transaction.record.action";
 
 export default function () {
 
@@ -16,6 +18,7 @@ export default function () {
 	const [displayedModules, setDisplayedModules] = useState<any[]>([]);
 	const [filteredModules, setFilteredModules] = useState<any[]>([]);
 
+	const dispatch = useDispatch<any>()
 
 	useEffect(() => {
 		const filtered = searchString
@@ -60,6 +63,26 @@ export default function () {
 		const endIndex = startIndex + itemsPerPage;
 		setDisplayedModules(modules.slice(startIndex, endIndex));
 	};
+
+	useEffect(() => {
+		dispatch(getModules())
+	}, [])
+
+	const models = useSelector(({ transactionRecord: { models } }) => models)
+
+	console.log('----------------------This is the benefit----------', models)
+
+	const convertedData = models.map((model: any) => {
+		return {
+			data: [
+				{ owner: 'Alan', date: '21/02/2024' },
+				{ type: 'text', content: model.text_data },
+				{ type: 'image', url: `${API_URL}/${model.image_filename}`, name: 'Image 1', attributes: { width: 800, height: 600 } },
+				{ type: 'video', url: `${API_URL}/${model.video_filename}`, name: 'Video 1', attributes: { duration: '3:45', resolution: '1920x1080' } },
+				{ type: 'audio', url: `${API_URL}/${model.audio_filename}`, name: 'Audio 1', attributes: { duration: '2:30', bitrate: '128 kbps' } }
+			]
+		};
+	});
 
 	const modelList = [
 		{
@@ -160,20 +183,21 @@ export default function () {
 					setSearchString={setSearchString}
 					searchString={searchString}
 				/>
-				{modelList && modelList.length > 0 ? (
-					<ul className={classes.modulesList}>
-						{
-							modelList.map((module, i) => (
-								<div className="module-container w-[30%] rounded-lg border-solid dark:bg-[#1e2022] relative p-4 hover:scale-102" style={{ boxShadow: "rgba(0, 0, 0, 0.1) 0px 10px 6px 4px" }}>
-									<ModuleTileProps data={module.data} key={i} />
-								</div>
-								// <ModuleTile key={module.data[0].owner} {...module.data} />
-							))
-						}
-					</ul>
-				) : (
-					<span>There is no data to display</span>
-				)}
+				{
+					modelList && modelList.length > 0 ? (
+						<ul className={classes.modulesList}>
+							{
+								convertedData.map((module:any, i:number) => (
+									<div className="module-container w-[30%] rounded-lg border-solid dark:bg-[#1e2022] relative p-4 hover:scale-102" style={{ boxShadow: "rgba(0, 0, 0, 0.1) 0px 10px 6px 4px" }}>
+										<ModuleTileProps data={module.data} key={i} />
+									</div>
+									// <ModuleTile key={module.data[0].owner} {...module.data} />
+								))
+							}
+						</ul>
+					) : (
+						<span>There is no data to display</span>
+					)}
 			</main>
 		</>
 	);

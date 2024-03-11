@@ -1,11 +1,13 @@
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.responses import JSONResponse
-from controller import save_file_data, get_file_by_id, get_all_files
+from controller import save_address, save_file_data, get_file_by_id, get_all_files
 from databases import Database
 import os
 from embedding import get_image_video_text_embeddings
 from dotenv import load_dotenv
 from fastapi_sqlalchemy import DBSessionMiddleware, db
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 # Load .env file
 load_dotenv()
@@ -18,17 +20,32 @@ app = FastAPI()
 
 database = Database(database_url)
 
+# Configure CORS
+origins = [
+    "http://localhost:3000",  # Add the origins you want to allow
+]
+
 # to avoid csrftokenError
 app.add_middleware(DBSessionMiddleware, db_url=database_url)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],  # You can specify specific HTTP methods if needed
+    allow_headers=["*"],  # You can specify specific HTTP headers if needed
+)
 
 
 @app.get("/")
 def root():
     return {"message": "Hello World"}
 
+
 @app.on_event("startup")
 async def startup_db_client():
     await database.connect()
+
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
@@ -41,6 +58,7 @@ async def upload_files(
     image: UploadFile = File(...),
     audio: UploadFile = File(...),
     text: str = Form(...),
+    address: str = Form(...),
 ):
     # Create an "uploads" folder if it doesn't exist
     upload_folder = "uploads"
@@ -52,9 +70,9 @@ async def upload_files(
     audio_filename = os.path.join(upload_folder, audio.filename)
 
     # Example: Get embeddings using OpenAI API
-    get_image_video_text_embeddings(
-        project_id, location, image_filename, video_filename, text
-    )
+    # get_image_video_text_embeddings(
+    #     project_id, location, image_filename, video_filename, text
+    # )
 
     # Save video file
     with open(video_filename, "wb") as video_file:
@@ -73,7 +91,7 @@ async def upload_files(
 
     # Save data to database
     file_id = await save_file_data(
-        video_filename, image_filename, audio_filename, processed_text
+        video_filename, image_filename, audio_filename, processed_text, address
     )
 
     return JSONResponse(
@@ -97,3 +115,19 @@ async def get_file(file_id: int):
 async def get_all_files_endpoint():
     all_files = await get_all_files()
     return all_files
+
+
+class MetaMaskAddress(BaseModel):
+    address: str
+
+
+@app.post("/saveMetamask")
+async def save_metamask_address(meta_mask_address: MetaMaskAddress):
+    address = meta_mask_address.address
+    user_id = await save_address(address)
+    return JSONResponse(
+        content={
+            "message": "Address saved successfully",
+            "user_id": user_id,
+        }
+    )

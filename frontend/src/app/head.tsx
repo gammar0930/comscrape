@@ -5,7 +5,7 @@ const Head = () => {
 
 	const searchparms = useSearchParams();
 	const name = searchparms.get("titlename");
-	const dynamicTitle = name ? `${name} | Commune` : "Commune";
+	const dynamicTitle = name ? `${name} | Comscrape` : "Comscrape";
 
 	return (
 		<>

@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 
 # My code
-import os, sys
+import os
 from dotenv import load_dotenv
 
 # Load .env file
@@ -18,6 +18,7 @@ metadata = MetaData()
 
 Base = declarative_base()
 
+
 class FileModel(Base):
     __tablename__ = "files"
     id = Column(Integer, primary_key=True, index=True)
@@ -25,8 +26,15 @@ class FileModel(Base):
     image_filename = Column(String, index=True, nullable=False)
     audio_filename = Column(String, index=True, nullable=False)
     text_data = Column(Text)
-    time_created = Column(DateTime(timezone=True), server_default=func.now())
-    time_updated = Column(DateTime(timezone=True), onupdate=func.now())
+    # time_created = Column(DateTime(timezone=True), server_default=func.now())
+    # time_updated = Column(DateTime(timezone=True), onupdate=func.now())
+    # wallet_address = Column(String, index=True, nullable=False)
+
+
+class UserModel(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True, index=True)
+    meta_mask_address = Column(String, index=True, nullable=False)
 
 
 Base.metadata.create_all(bind=engine)

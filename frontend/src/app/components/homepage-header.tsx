@@ -1,13 +1,15 @@
 import { useState, useEffect, useRef } from "react";
-
+import Image from "next/image";
 import { ApiPromise, WsProvider } from "@polkadot/api";
-
+import MetaMaskImage from "../../../public/svg/metamask.svg";
 import Modal from "antd/es/modal/Modal";
-
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { saveMetaMaskAddress } from "@/store/action/transaction.record.action";
 import AudioUpload from "@/components/modal/mp3Upload";
 import VideoUpload from "@/components/modal/VideoUpload";
 import ImageUpload from "@/components/modal/_imageUpload";
 import { UploadData } from "@/store/action/uploadMoule.action";
+import { useDispatch, useSelector } from 'react-redux'
 
 const words: string[] = [
   "developers.",
@@ -42,6 +44,11 @@ export default function HomepageHeader() {
 
   const [formData, setFormData] = useState(new FormData());
 
+  //user login
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isShowSubstrateAuth, setIsShowSubstrateAuth] = useState(false)
+  const [metamaskAddress, setMetamaskAddress] = useState<string | undefined>('')
+
   // state of the scroll position and header height
   const [scrollPosition, setScrollPosition] = useState(0);
   const headerRef = useRef<any>(null);
@@ -50,8 +57,13 @@ export default function HomepageHeader() {
   const [api, setApi] = useState<ApiPromise | null>(null);
   const [chainInfo, setChainInfo] = useState('');
   const [nodeName, setNodeName] = useState('');
+
+  const dispatch = useDispatch<any>()
   // typeWriter effect
   // give me the context of this whole useEffect
+
+  const loginStatus = useSelector(({ transactionRecord: { loginStatus } }) => loginStatus)
+  //getting user address
   useEffect(() => {
     if (index === words.length) return; // if end of words, return
     // if subIndex is equal to the length of the word + 1 and index is not the last word and not reverse
@@ -115,61 +127,9 @@ export default function HomepageHeader() {
     setIsShowAuthModalOpen(false);
   };
 
-  const handleShowMindModalCancel = () => {
+  const handleShowMintModalCancel = () => {
     setIsShowModelMintModalOpen(false)
   }
-
-  const onGitHubLoginSuccess = (response: any) => {
-
-    setIsShowAuthModalOpen(false)
-
-    const accessToken = response.code;
-
-    const getUserInfo = async (accessToken: string) => {
-
-      const response = await fetch('https://api.github.com/user', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      if (response.ok) {
-
-        const userInfo = await response.json();
-        // Handle user information (userInfo)
-        console.log('------github account------', userInfo);
-
-      } else {
-        // Handle error
-        console.error('Failed to fetch user information from GitHub API');
-      }
-    };
-
-    // Call this function with the access token obtained after successful login
-    getUserInfo(accessToken);
-
-  }
-
-  const onGitHubLoginFailure = (response: any) => {
-    console.log('------the data from github-----failed-----', response);
-  }
-
-  const responseMessage = (response: any) => {
-    console.log('-----------------------This is the React component-------------------', response);
-  };
-  const errorMessage = () => {
-    console.log('An error has occured')
-  };
-
-  // useEffect(() => {
-  //   const connectToSubstrate = async () => {
-  //     const provider = new WsProvider('wss://rpc.polkadot.io');
-  //     const substrateApi = await ApiPromise.create({ provider });
-  //     setApi(substrateApi);
-  //   };
-
-  //   connectToSubstrate();
-  // }, []);
 
   const connectToSubstrate = async () => {
     const provider = new WsProvider('wss://rpc.polkadot.io');
@@ -194,8 +154,6 @@ export default function HomepageHeader() {
   const getAccountBalance = async () => {
     try {
       const accountInfo = await api?.query.system.account(address);
-
-      console.log('------------------where is the account Info---------', accountInfo)
 
       // if (accountInfo?.isSome) {
       //   const { nonce, data: balance } = accountInfo.unwrap();
@@ -227,6 +185,11 @@ export default function HomepageHeader() {
   };
 
   const handleGetStartedButton = () => {
+    // setIsShowModelMintModalOpen(true)
+    setIsShowAuthModalOpen(true)
+  }
+
+  const handleMintModalButton = () => {
     setIsShowModelMintModalOpen(true)
   }
 
@@ -243,13 +206,27 @@ export default function HomepageHeader() {
 
   const handleUploadButton = () => {
     formData.append('text', text);
-    UploadData(formData)
-    setText('')
+    if (metamaskAddress) {
+      formData.append('address', metamaskAddress)
+    }
+    dispatch(UploadData(formData))
+    formData.delete('text');
+    formData.delete('image');
+    formData.delete('audio');
+    formData.delete('video');
+    formData.delete('address')
+    setText('');
   }
 
   const handleFormDataUpdate = (updatedFormData: FormData) => {
     setFormData(updatedFormData);
   };
+
+  useEffect(() => {
+    if (isLoggedIn && metamaskAddress) {
+      dispatch(saveMetaMaskAddress(metamaskAddress))
+    }
+  }, [isLoggedIn, metamaskAddress])
 
   return (
 
@@ -270,22 +247,31 @@ export default function HomepageHeader() {
             </div>
 
             <div className='w-30 h-10'>
-              <div className=' bg-blue-700 rounded-lg shadow-lg hover:shadow-2xl text-center hover:bg-blue-600 duration-200 text-white hover:text-white font-sans font-semibold justify-center px-2 py-2 hover:border-blue-300 hover:border-2 hover:border-solid cursor-pointer' onClick={handleGetStartedButton}>
-                Get Started
-              </div>
+
+              {
+                loginStatus ?
+                  <div className=' bg-blue-700 rounded-lg shadow-lg hover:shadow-2xl text-center hover:bg-blue-600 duration-200 text-white hover:text-white font-sans font-semibold justify-center px-2 py-2 hover:border-blue-300 hover:border-2 hover:border-solid cursor-pointer' onClick={handleMintModalButton}>
+                    Mint your topic
+                  </div>
+                  :
+                  <div className=' bg-blue-700 rounded-lg shadow-lg hover:shadow-2xl text-center hover:bg-blue-600 duration-200 text-white hover:text-white font-sans font-semibold justify-center px-2 py-2 hover:border-blue-300 hover:border-2 hover:border-solid cursor-pointer' onClick={handleGetStartedButton}>
+                    Get Started
+                  </div>
+              }
+
             </div>
 
           </div>
 
           <div className='hidden sm:block w-full lg:w-1/2 h-full lg:-mr-44 '>
-            <img src="gif/logo/commune.gif" alt="Commune Logo" className='' />
+            <img src="https://raw.githubusercontent.com/luxejs/comhub-app/main/public/images/comai-webp.webp" alt="Commune Logo" className='' />
           </div>
 
         </div>
       </div>
       {
         isShowModelMintModalOpen &&
-        <Modal open={isShowModelMintModalOpen} onCancel={handleShowMindModalCancel} footer={null} width={500}>
+        <Modal open={isShowModelMintModalOpen} onCancel={handleShowMintModalCancel} footer={null} width={500}>
           <div className="flex flex-col">
             <h2 className="text-center">
               Mint Your Model
@@ -317,7 +303,119 @@ export default function HomepageHeader() {
           </div>
         </Modal>
       }
+      {
+        isShowAuthModalOpen &&
+        <Modal open={isShowAuthModalOpen} onCancel={handleShowAuthModalCancel} footer={null} width={500}>
+          <div className='flex items-center justify-center'>
+            <span style={{ fontWeight: '500', alignItems: 'center', display: 'flex', fontSize: '2rem' }}>
+              Connect to Comscrape
+            </span>
+          </div>
+          <div className="flex items-center justify-center mt-2 cursor-pointer">
+            <ConnectButton.Custom>
+              {({
+                account,
+                chain,
+                openAccountModal,
+                openChainModal,
+                openConnectModal,
+                authenticationStatus,
+                mounted,
+              }) => {
+                // Note: If your app doesn't use authentication, you
+                // can remove all 'authenticationStatus' checks
+                const ready = mounted && authenticationStatus !== 'loading';
+                ready && account && chain && setIsLoggedIn(true);
+                setMetamaskAddress(account?.address)
+                const connected =
+                  ready &&
+                  account &&
+                  chain &&
+                  (!authenticationStatus ||
+                    authenticationStatus === 'authenticated');
+                return (
+                  <div
+                    {...(!ready && {
+                      'aria-hidden': true,
+                      'style': {
+                        opacity: 0,
+                        pointerEvents: 'none',
+                        userSelect: 'none',
+                      },
+                    })}
+                  >
+                    {(() => {
+                      if (!connected) {
+                        return (
+                          <div className='flex items-center justify-center hover:bg-gray-300 p-2 w-[180.77px] h-[105.77px] rounded-md' style={{ flexDirection: 'column', border: '1px solid gray' }} onClick={openConnectModal}>
+                            <Image src={MetaMaskImage} alt='login with Metamask' width={50} height={50} className='cursor-pointer mb-1' />
+                            <button type="button">
+                              Metamask
+                            </button>
+                          </div>
+                        );
+                      }
 
+                      if (chain.unsupported) {
+                        return (
+                          <button onClick={openChainModal} type="button" style={{ boxShadow: 'rgb(0 0 0 / 98%) 3px 3px 3px 3px' }}>
+                            Wrong network
+                          </button>
+                        );
+                      }
+
+                      return (
+                        <div style={{ display: 'flex', gap: 12 }} className='flex items-center flex-col justify-center'>
+                          <button
+                            onClick={openChainModal}
+                            style={{ display: 'flex', alignItems: 'center' }}
+                            type="button"
+                          >
+                            {chain.hasIcon && (
+                              <div
+                                style={{
+                                  background: chain.iconBackground,
+                                  width: 12,
+                                  height: 12,
+                                  borderRadius: 999,
+                                  overflow: 'hidden',
+                                  marginRight: 4,
+                                }}
+                              >
+                                {chain.iconUrl && (
+                                  <img
+                                    alt={chain.name ?? 'Chain icon'}
+                                    src={chain.iconUrl}
+                                    style={{ width: 12, height: 12 }}
+                                  />
+                                )}
+                              </div>
+                            )}
+                            {chain.name}
+                          </button>
+
+                          <button type="button" style={{ color: 'darkcyan' }}>
+                            Connected
+                          </button>
+
+                          <button onClick={openAccountModal} type="button">
+                            {account.displayName}
+                            {account.displayBalance
+                              ? ` (${account.displayBalance})`
+                              : ''}
+                          </button>
+
+                        </div>
+                      );
+                    })()}
+                  </div>
+                );
+              }}
+            </ConnectButton.Custom>
+          </div>
+
+        </Modal>
+      }
     </header>
   );
 }

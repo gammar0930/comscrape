@@ -6,7 +6,7 @@ interface TextModuleProps {
 
 const TextModule: React.FC<TextModuleProps> = ({ content }) => (
     <div>
-        <p>{content}</p>
+        <p className='dark:text-white'>{content}</p>
     </div>
 );
 
@@ -22,7 +22,7 @@ interface ImageModuleProps {
 const ImageModule: React.FC<ImageModuleProps> = ({ url, name, attributes }) => (
     <div>
         {/* <img src={url} alt={name} width={attributes.width || 0} height={attributes.height || 0} style={{ width: '500', height: '300' }} /> */}
-        <img src={url} alt={name} style={{ width: '550px', height: '300px' }} />
+        <img src={url} alt={name} style={{ width: '250px', height: '250px' }} />
     </div>
 );
 
@@ -106,12 +106,12 @@ const ModuleTile: React.FC<ModuleTileProps> = ({ item }) => {
 };
 
 interface ModuleTilePropsContainer {
-    data: ModuleTileProps['item'][];
+    data: any;
 }
 
 const ModuleTileProps: React.FC<ModuleTilePropsContainer> = ({ data }) => (
     <div>
-        {data.map((item, index) => (
+        {data.map((item: any, index: number) => (
             <ModuleTile key={index} item={item} />
         ))}
     </div>
