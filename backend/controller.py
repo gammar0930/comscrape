@@ -40,8 +40,12 @@ async def save_file_data(
 
 
 async def get_file_by_id(file_id: int):
-    query = select(FileModel).where(FileModel.c.id == file_id)
-    return await database.fetch_one(query)
+    try:
+        await connect_to_database()
+        query = select(FileModel).where(FileModel.c.id == file_id)
+        return await database.fetch_one(query)
+    finally:
+        await disconnect_from_database()
 
 
 async def get_all_files():
@@ -53,7 +57,6 @@ async def get_all_files():
         await disconnect_from_database()
 
 
-
 async def save_address(address: str):
     try:
         await connect_to_database()
@@ -61,7 +64,7 @@ async def save_address(address: str):
         query = select([UserModel]).where(UserModel.meta_mask_address == address)
         existing_address = await database.fetch_one(query)
 
-        print('---------This is an query---------', existing_address)
+        print("---------This is an query---------", existing_address)
         if existing_address:
             return "Address already exists in the database"
 

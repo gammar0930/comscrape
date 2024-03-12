@@ -70,16 +70,14 @@ export default function () {
 
 	const models = useSelector(({ transactionRecord: { models } }) => models)
 
-	console.log('----------------------This is the benefit----------', models)
-
 	const convertedData = models.map((model: any) => {
 		return {
 			data: [
 				{ owner: 'Alan', date: '21/02/2024' },
 				{ type: 'text', content: model.text_data },
-				{ type: 'image', url: `${API_URL}/${model.image_filename}`, name: 'Image 1', attributes: { width: 800, height: 600 } },
-				{ type: 'video', url: `${API_URL}/${model.video_filename}`, name: 'Video 1', attributes: { duration: '3:45', resolution: '1920x1080' } },
-				{ type: 'audio', url: `${API_URL}/${model.audio_filename}`, name: 'Audio 1', attributes: { duration: '2:30', bitrate: '128 kbps' } }
+				{ type: 'image', url: `${API_URL}/${model.image_filename.replace(/\\/g, '/')}`, name: 'Image 1', attributes: { width: 800, height: 600 } },
+				{ type: 'video', url: `${API_URL}/${model.video_filename.replace(/\\/g, '/')}`, name: 'Video 1', attributes: { duration: '3:45', resolution: '1920x1080' } },
+				{ type: 'audio', url: `${API_URL}/${model.audio_filename.replace(/\\/g, '/')}`, name: 'Audio 1', attributes: { duration: '2:30', bitrate: '128 kbps' } }
 			]
 		};
 	});
