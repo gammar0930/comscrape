@@ -1,32 +1,32 @@
 "use client";
 import "@fontsource/source-code-pro";
-import '@rainbow-me/rainbowkit/styles.css';
+// import '@rainbow-me/rainbowkit/styles.css';
 
-import {
-  RainbowKitProvider,
-  darkTheme,
-  connectorsForWallets
-} from '@rainbow-me/rainbowkit';
-import {
-  rainbowWallet,
-  walletConnectWallet,
-  trustWallet,
-  okxWallet,
-  ledgerWallet,
-  metaMaskWallet
-} from '@rainbow-me/rainbowkit/wallets';
-import { configureChains, createConfig, sepolia, WagmiConfig } from 'wagmi';
-import {
-  mainnet,
-  polygon,
-  optimism,
-  arbitrum,
-  base,
-  zora,
-  goerli,
-} from 'wagmi/chains';
-import { alchemyProvider } from 'wagmi/providers/alchemy';
-import { publicProvider } from 'wagmi/providers/public';
+// import {
+//   RainbowKitProvider,
+//   darkTheme,
+//   connectorsForWallets
+// } from '@rainbow-me/rainbowkit';
+// import {
+//   rainbowWallet,
+//   walletConnectWallet,
+//   trustWallet,
+//   okxWallet,
+//   ledgerWallet,
+//   metaMaskWallet
+// } from '@rainbow-me/rainbowkit/wallets';
+// import { configureChains, createConfig, sepolia, WagmiConfig } from 'wagmi';
+// import {
+//   mainnet,
+//   polygon,
+//   optimism,
+//   arbitrum,
+//   base,
+//   zora,
+//   goerli,
+// } from 'wagmi/chains';
+// import { alchemyProvider } from 'wagmi/providers/alchemy';
+// import { publicProvider } from 'wagmi/providers/public';
 import NavigationBar from "./components/navigation-bar";
 import ThemeProvider from "./toggle-theme-provider";
 import Head from "./head";
@@ -35,47 +35,47 @@ import { Provider } from 'react-redux';
 import { store } from '@/store/index';
 import './globals.css';
 
-const { chains, publicClient } = configureChains(
-  [mainnet, polygon, optimism, arbitrum, base, zora, sepolia, goerli],
-  [
-    alchemyProvider({ apiKey: 'Pg7_v8x8SlXaP0ZsI90QrGFxOEEJBCtA' }),
-    publicProvider()
-  ]
-);
+// const { chains, publicClient } = configureChains(
+//   [mainnet, polygon, optimism, arbitrum, base, zora, sepolia, goerli],
+//   [
+//     alchemyProvider({ apiKey: 'Pg7_v8x8SlXaP0ZsI90QrGFxOEEJBCtA' }),
+//     publicProvider()
+//   ]
+// );
 
-const connectors = connectorsForWallets([
-  {
-    groupName: 'Recommended',
-    wallets: [
-      metaMaskWallet({ projectId, chains }), // Metamask
-      ...(projectId ? [walletConnectWallet({ projectId, chains })] : []),
-      ...(projectId ? [trustWallet({ projectId, chains })] : []),
-      // walletConnectWallet({ projectId, chains }),
-      // trustWallet({ projectId, chains }),
-      // Add more recommended wallets as needed
-    ],
-  },
-  {
-    groupName: 'Other',
-    wallets: [
-      ...(projectId ? [rainbowWallet({ projectId, chains })] : []),
-      ...(projectId ? [okxWallet({ projectId, chains })] : []),
-      ...(projectId ? [ledgerWallet({ projectId, chains })] : []),
+// const connectors = connectorsForWallets([
+//   {
+//     groupName: 'Recommended',
+//     wallets: [
+//       metaMaskWallet({ projectId, chains }), // Metamask
+//       ...(projectId ? [walletConnectWallet({ projectId, chains })] : []),
+//       ...(projectId ? [trustWallet({ projectId, chains })] : []),
+//       // walletConnectWallet({ projectId, chains }),
+//       // trustWallet({ projectId, chains }),
+//       // Add more recommended wallets as needed
+//     ],
+//   },
+//   {
+//     groupName: 'Other',
+//     wallets: [
+//       ...(projectId ? [rainbowWallet({ projectId, chains })] : []),
+//       ...(projectId ? [okxWallet({ projectId, chains })] : []),
+//       ...(projectId ? [ledgerWallet({ projectId, chains })] : []),
 
-      // rainbowWallet({ projectId, chains }),
-      // coinbaseWallet({ projectId, chains }),
-      // okxWallet({ projectId, chains }),
-      // ledgerWallet({ projectId, chains }),
-      // Add other wallets to the "Other" group
-    ],
-  },
-]);
+//       // rainbowWallet({ projectId, chains }),
+//       // coinbaseWallet({ projectId, chains }),
+//       // okxWallet({ projectId, chains }),
+//       // ledgerWallet({ projectId, chains }),
+//       // Add other wallets to the "Other" group
+//     ],
+//   },
+// ]);
 
-export const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient,
-});
+// export const wagmiConfig = createConfig({
+//   autoConnect: true,
+//   connectors,
+//   publicClient,
+// });
 
 export default function RootLayout({
   children,
@@ -86,8 +86,8 @@ export default function RootLayout({
     <html lang="en">
       <Head />
       <body>
-        <WagmiConfig config={wagmiConfig}>
-          <RainbowKitProvider chains={chains} coolMode theme={darkTheme()}>
+        {/* <WagmiConfig config={wagmiConfig}>
+          <RainbowKitProvider chains={chains} coolMode theme={darkTheme()}> */}
           <Provider store={store}>
             <ThemeProvider>
               {/* <Banner /> */}
@@ -96,8 +96,8 @@ export default function RootLayout({
               {/* <Footer /> */}
             </ThemeProvider>
             </Provider>
-          </RainbowKitProvider>
-        </WagmiConfig>
+          {/* </RainbowKitProvider>
+        </WagmiConfig> */}
       </body>
     </html>
   );

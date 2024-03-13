@@ -3,7 +3,7 @@ import Image from "next/image";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import MetaMaskImage from "../../../public/svg/metamask.svg";
 import Modal from "antd/es/modal/Modal";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+// import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { saveMetaMaskAddress } from "@/store/action/transaction.record.action";
 import AudioUpload from "@/components/modal/mp3Upload";
 import VideoUpload from "@/components/modal/VideoUpload";
@@ -62,7 +62,8 @@ export default function HomepageHeader() {
   // typeWriter effect
   // give me the context of this whole useEffect
 
-  const loginStatus = useSelector(({ transactionRecord: { loginStatus } }) => loginStatus)
+  // const loginStatus = useSelector(({ transactionRecord: { loginStatus } }) => loginStatus)
+  const loginStatus = true
   //getting user address
   useEffect(() => {
     if (index === words.length) return; // if end of words, return
@@ -248,7 +249,7 @@ export default function HomepageHeader() {
 
             <div className='w-30 h-10'>
 
-              {
+              {/* {
                 loginStatus ?
                   <div className=' bg-blue-700 rounded-lg shadow-lg hover:shadow-2xl text-center hover:bg-blue-600 duration-200 text-white hover:text-white font-sans font-semibold justify-center px-2 py-2 hover:border-blue-300 hover:border-2 hover:border-solid cursor-pointer' onClick={handleMintModalButton}>
                     Mint your topic
@@ -257,8 +258,11 @@ export default function HomepageHeader() {
                   <div className=' bg-blue-700 rounded-lg shadow-lg hover:shadow-2xl text-center hover:bg-blue-600 duration-200 text-white hover:text-white font-sans font-semibold justify-center px-2 py-2 hover:border-blue-300 hover:border-2 hover:border-solid cursor-pointer' onClick={handleGetStartedButton}>
                     Get Started
                   </div>
-              }
+              } */}
 
+              <div className=' bg-blue-700 rounded-lg shadow-lg hover:shadow-2xl text-center hover:bg-blue-600 duration-200 text-white hover:text-white font-sans font-semibold justify-center px-2 py-2 hover:border-blue-300 hover:border-2 hover:border-solid cursor-pointer' onClick={handleMintModalButton}>
+                Mint your topic
+              </div>
             </div>
 
           </div>
@@ -303,7 +307,7 @@ export default function HomepageHeader() {
           </div>
         </Modal>
       }
-      {
+      {/* {
         isShowAuthModalOpen &&
         <Modal open={isShowAuthModalOpen} onCancel={handleShowAuthModalCancel} footer={null} width={500}>
           <div className='flex items-center justify-center'>
@@ -415,7 +419,7 @@ export default function HomepageHeader() {
           </div>
 
         </Modal>
-      }
+      } */}
     </header>
   );
 }
