@@ -8,9 +8,10 @@ import classNames from "classnames";
 import ActiveLink from "./active-link";
 import { Dropdown, Modal, Space, Select } from 'antd';
 import Image from "next/image";
-import { ConnectButton } from '@rainbow-me/rainbowkit';
+// import { ConnectButton } from '@rainbow-me/rainbowkit';
 import MetaMaskImage from '../../../public/svg/metamask.svg'
 import axios from "axios";
+import Logo from "../../../public/svg/commune.svg";
 
 export default function NavigationBar() {
 
@@ -59,7 +60,7 @@ export default function NavigationBar() {
             <div className={classes.items}>
                 <Link className={classes.brand} href="/">
                     <div className={classes.logo}>
-                        <img style={{ width: "auto", height: "3.7rem", marginRight: "-0.25rem" }} src="/svg/commune.svg" alt="My Site Logo" />
+                        <Image style={{ width: "auto", height: "3.7rem", marginRight: "-0.25rem" }} src={Logo} alt="My Site Logo" width={20} height={50} />
                     </div>
                     <b className="dark:text-white dark:hover:text-[#25c2a0]">commune</b>
                 </Link>

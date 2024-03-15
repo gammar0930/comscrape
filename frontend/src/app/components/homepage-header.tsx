@@ -10,6 +10,7 @@ import VideoUpload from "@/components/modal/VideoUpload";
 import ImageUpload from "@/components/modal/_imageUpload";
 import { UploadData } from "@/store/action/uploadMoule.action";
 import { useDispatch, useSelector } from 'react-redux'
+import CubesShufflingGIF from '../../../public/gif/logo/CubesShufflingGIF.gif'
 
 const words: string[] = [
   "developers.",
@@ -233,7 +234,7 @@ export default function HomepageHeader() {
 
     <header ref={headerRef} className={` dark:bg-[#161616] p-[4rem] py-32 text-center overflow-hidden ${getHeaderClasses(scrollPosition, headerHeight)} duration-500`} >
 
-      <img src="gif/logo/CubesShufflingGIF.gif" alt="Commune Logo" className='block sm:hidden' />
+      <Image src={CubesShufflingGIF} alt="Commune Logo" className='block sm:hidden' width={20} height={20} />
       <div className="px-10 py-5">
         <div className='flex lg:flex-row flex-col h-1/2'>
           <div className='w-full lg:w-1/2 flex flex-col items-center justify-center'>

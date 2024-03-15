@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSearchParams } from 'next/navigation';
+import Logo from "../../public/svg/commune.svg";
 
 const Head = () => {
 
@@ -14,7 +15,7 @@ const Head = () => {
 			</title>
 			<meta content="width=device-width, initial-scale=1" name="viewport" />
 			<meta name="description" content="Renovating the way we build software for developers" />
-			<link rel="icon" href="/svg/commune.svg" />
+			<link rel="icon" href={Logo.src} />
 		</>
 	);
 };
