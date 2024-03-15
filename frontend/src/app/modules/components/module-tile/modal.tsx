@@ -134,7 +134,7 @@ function SchemaNameElement({
 				{name.charAt(0).toUpperCase() + name.slice(1)}
 			</h4>
 			{children}
-			<RunButton />
+			{/* <RunButton /> */}
 		</li>
 	);
 }
@@ -249,14 +249,14 @@ function OutputElement(outputValue: any) {
 	);
 }
 
-function RunButton() {
-	return (
-		<button
-			className="bg-[#7F57EA] text-white rounded-md p-2 hover:bg-[#5829D7] w-full"
-			onClick={() => alert("Not implemented.")}
-		>
-			<PlayCircleOutlined style={{ marginRight: "0.5rem" }} />
-			RUN
-		</button>
-	);
-}
+// function RunButton() {
+// 	return (
+// 		<button
+// 			className="bg-[#7F57EA] text-white rounded-md p-2 hover:bg-[#5829D7] w-full"
+// 			onClick={() => alert("Not implemented.")}
+// 		>
+// 			<PlayCircleOutlined style={{ marginRight: "0.5rem" }} />
+// 			RUN
+// 		</button>
+// 	);
+// }
