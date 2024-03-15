@@ -28,7 +28,7 @@ const props: UploadProps = {
 const VideoUploadComponent: React.FC = () => (
     <Dragger {...props}>
         <p className="ant-upload-drag-icon">
-            <InboxOutlined />
+            {/* <InboxOutlined /> */}
         </p>
         <p className="ant-upload-text">Click or drag video to this area to upload</p>
         <p className="ant-upload-hint">

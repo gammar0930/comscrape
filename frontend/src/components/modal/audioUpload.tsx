@@ -38,7 +38,7 @@ const AudioUpload: React.FC<AudioUploadProps> = ({ onChange }) => {
         // For simplicity, we'll just simulate a successful upload after a delay.
       }}
     >
-      <Button icon={<UploadOutlined />}>Upload Audio</Button>
+      {/* <Button icon={<UploadOutlined />}>Upload Audio</Button> */}
     </Upload>
   );
 };
