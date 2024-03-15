@@ -185,7 +185,7 @@ export default function () {
 					modelList && modelList.length > 0 ? (
 						<ul className={classes.modulesList}>
 							{
-								convertedData.map((module:any, i:number) => (
+								modelList.map((module:any, i:number) => (
 									<div className="module-container w-[30%] rounded-lg border-solid dark:bg-[#1e2022] relative p-4 hover:scale-102" style={{ boxShadow: "rgba(0, 0, 0, 0.1) 0px 10px 6px 4px" }}>
 										<ModuleTileProps data={module.data} key={i} />
 									</div>
