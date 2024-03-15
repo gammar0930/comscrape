@@ -166,7 +166,7 @@ export default function ModuleTile({
 				)}
 			</li>
 			{/* emotions */}
-			<div
+			{/* <div
 				className="flex items-center"
 				style={{ position: "relative", marginBottom: "1rem" }}
 			>
@@ -232,7 +232,7 @@ export default function ModuleTile({
 					)}
 					<span style={{ color: "rgba(184, 192, 209, 1)" }}>{heartCount}</span>
 				</div>
-			</div>
+			</div> */}
 			{isShowDetailedModalOpen && (
 				<Modal
 					title={"Module Details"}
