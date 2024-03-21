@@ -5,7 +5,6 @@ import os
 
 database = Database(os.environ["DATABASE_URL"])
 
-
 async def connect_to_database():
     await database.connect()
 
@@ -18,7 +17,8 @@ async def save_file_data(
     video_filename: str,
     image_filename: str,
     audio_filename: str,
-    text_data: str,
+    header: str,
+    content: str,
     # address: str,
 ):
     try:
@@ -29,7 +29,8 @@ async def save_file_data(
             video_filename=video_filename,
             image_filename=image_filename,
             audio_filename=audio_filename,
-            text_data=text_data,
+            header=header,
+            content=content,
             # wallet_address=address,
         )
 

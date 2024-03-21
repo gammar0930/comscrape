@@ -1,4 +1,4 @@
-import { DONE, GET_MODULES_SUCCESS, LOADING, SAVE_METAMASK_FAILED, SAVE_METAMASK_SUCCESS } from "./type"
+import { DONE, GET_MODULES_FAILED, GET_MODULES_SUCCESS, LOADING, SAVE_METAMASK_FAILED, SAVE_METAMASK_SUCCESS } from "./type"
 
 export const API_URL = 'http://127.0.0.1:8000'
 
@@ -89,14 +89,12 @@ export const getModules = () => async (dispatch: any) => {
 
         const data = await res.json()
 
-        console.log('--------------This is the data from web server---------', data)
-
         if (data) {
             dispatch({ type: GET_MODULES_SUCCESS, payload: data })
         }
     }
     catch (e) {
 
-        // dispatch({ type: SAVE_TRANSACTION_FAILED })
+        dispatch({ type: GET_MODULES_FAILED })
     }
 }

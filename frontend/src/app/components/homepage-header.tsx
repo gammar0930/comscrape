@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { ApiPromise, WsProvider } from "@polkadot/api";
-import MetaMaskImage from "../../../public/svg/metamask.svg";
 import Modal from "antd/es/modal/Modal";
 // import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { saveMetaMaskAddress } from "@/store/action/transaction.record.action";
@@ -9,8 +8,9 @@ import AudioUpload from "@/components/modal/mp3Upload";
 import VideoUpload from "@/components/modal/VideoUpload";
 import ImageUpload from "@/components/modal/_imageUpload";
 import { UploadData } from "@/store/action/uploadMoule.action";
-import { useDispatch, useSelector } from 'react-redux'
-import CubesShufflingGIF from '../../../public/gif/logo/CubesShufflingGIF.gif'
+import { useDispatch } from 'react-redux'
+import CubesShufflingGIF from '../../../public/gif/logo/commune.gif'
+import { toast } from 'react-toastify';
 
 const words: string[] = [
   "developers.",
@@ -19,6 +19,7 @@ const words: string[] = [
   "everyone.",
   "<END>",
 ];
+
 const colour: string[] = [
   "text-[#00000]",
   "text-[#ffb4ed] dark:text-[#FFD6F5]",
@@ -28,6 +29,8 @@ const colour: string[] = [
 
 const TITLE = "Comscrape";
 const TAGLINE = "World's largest AI model";
+
+type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
 export default function HomepageHeader() {
 
@@ -41,8 +44,8 @@ export default function HomepageHeader() {
   const [balance, setBalance] = useState(null);
 
   //mint video, image and audio,
-  const [text, setText] = useState('')
-
+  const [header, setHeader] = useState('')
+  const [content, setContent] = useState('')
   const [formData, setFormData] = useState(new FormData());
 
   //user login
@@ -207,17 +210,30 @@ export default function HomepageHeader() {
   }
 
   const handleUploadButton = () => {
-    formData.append('text', text);
+
+    formData.append('header', header);
+    formData.append('content', content);
+
     if (metamaskAddress) {
       formData.append('address', metamaskAddress)
     }
-    dispatch(UploadData(formData))
-    formData.delete('text');
+
+    dispatch(UploadData(formData)).then((res: any) => {
+      console.log('------------This is the response from backend----------', res.status)
+      toast.success('Upload Successful', { autoClose: 2000 });
+    }).catch((e: any) => {
+      toast.error('Upload Failed', { autoClose: 2000 });
+      console.log('------------e--------', e)
+    })
+
+    formData.delete('header');
+    formData.delete('content');
     formData.delete('image');
     formData.delete('audio');
     formData.delete('video');
     formData.delete('address')
-    setText('');
+    setHeader('');
+    setContent('')
   }
 
   const handleFormDataUpdate = (updatedFormData: FormData) => {
@@ -233,7 +249,6 @@ export default function HomepageHeader() {
   return (
 
     <header ref={headerRef} className={` dark:bg-[#161616] p-[4rem] py-32 text-center overflow-hidden ${getHeaderClasses(scrollPosition, headerHeight)} duration-500`} >
-
       <Image src={CubesShufflingGIF} alt="Commune Logo" className='block sm:hidden' width={20} height={20} />
       <div className="px-10 py-5">
         <div className='flex lg:flex-row flex-col h-1/2'>
@@ -276,25 +291,42 @@ export default function HomepageHeader() {
       </div>
       {
         isShowModelMintModalOpen &&
-        <Modal open={isShowModelMintModalOpen} onCancel={handleShowMintModalCancel} footer={null} width={500}>
+        <Modal open={isShowModelMintModalOpen} onCancel={handleShowMintModalCancel} footer={null} width={600}>
           <div className="flex flex-col">
-            <h2 className="text-center">
-              Mint Your Model
-            </h2>
 
-            <label>Text:</label>
-            <input value={text} onChange={({ target: { value } }) => setText(value)} className="p-2 mb-2" />
+            <div className="flex items-center justify-center">
+
+              <Image src='/img/reward/golden1.png' alt="Commune Logo" width={80} height={80} className="mr-4" />
+
+              <div className="flex flex-col">
+                <h1 className="text-center">
+                  Mint Your Topic
+                </h1>
+                <span className="text-center" style={{ fontSize: '18px', fontWeight: '500' }}>The more <span style={{ color: 'red' }}>uniqueness</span>, the more <span style={{ color: 'red' }}>emphasis</span>.</span>
+              </div>
+
+              <Image src='/img/reward/golden3.png' alt="Commune Logo" width={80} height={80} className="ml-4" />
+
+            </div>
+
+            <hr className="mt-2 mb-2" />
+
+            <label>Topic:</label>
+            <input value={header} onChange={({ target: { value } }) => setHeader(value)} className="p-3 mb-2 border-1 rounded-sm" />
+
+            <label>Content:</label>
+            <textarea value={content} onChange={({ target: { value } }) => setContent(value)} className="p-2 mb-2" />
 
             <label>Video:</label>
             <VideoUpload formData={formData} onFormDataUpdate={handleFormDataUpdate} />
 
-            <div className="flex items-center mt-5">
+            <div className="flex items-start mt-5">
               <div className="flex flex-col">
                 <label>Image:</label>
                 <ImageUpload onImageSelect={handleImageUpload} />
               </div>
 
-              <div className="flex flex-col">
+              <div className="flex flex-col ml-2">
                 <label>Audio:</label>
                 <AudioUpload onUpload={handleAudioUpload} />
               </div>
@@ -308,6 +340,7 @@ export default function HomepageHeader() {
           </div>
         </Modal>
       }
+
       {/* {
         isShowAuthModalOpen &&
         <Modal open={isShowAuthModalOpen} onCancel={handleShowAuthModalCancel} footer={null} width={500}>

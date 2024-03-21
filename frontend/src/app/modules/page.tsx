@@ -75,8 +75,8 @@ export default function () {
 			data: [
 				{ owner: 'Alan', date: '21/02/2024' },
 				{ type: 'text', content: model.text_data },
-				{ type: 'image', url: `${API_URL}/${model.image_filename.replace(/\\/g, '/')}`, name: 'Image 1', attributes: { width: 800, height: 600 } },
-				{ type: 'video', url: `${API_URL}/${model.video_filename.replace(/\\/g, '/')}`, name: 'Video 1', attributes: { duration: '3:45', resolution: '1920x1080' } },
+				{ type: 'image', url: `${API_URL}/${model.image_filename.replace(/\\/g, '/')}`, name: 'Image 1', attributes: { width: 600, height: 400 } },
+				{ type: 'video', url: `${API_URL}/${model.video_filename.replace(/\\/g, '/')}`, name: 'Video 1', attributes: { duration: '3:45', resolution: '1280x720' } },
 				{ type: 'audio', url: `${API_URL}/${model.audio_filename.replace(/\\/g, '/')}`, name: 'Audio 1', attributes: { duration: '2:30', bitrate: '128 kbps' } }
 			]
 		};
@@ -85,82 +85,82 @@ export default function () {
 	const modelList = [
 		{
 			data: [
-				{ owner: 'Alan', date: '21/02/2024' },
+				{ owner: 'Alan', date: '21/02/2024', reward: '/img/reward/golden.png' },
 				{ type: 'text', content: 'Learn how to create an account and manage your keys.' },
-				{ type: 'image', url: 'https://platform.stability.ai/TSgRPCImageToImageResult.png', name: 'Image 1', attributes: { width: 800, height: 600 } },
-				{ type: 'video', url: '/video/auto-1.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1920x1080' } },
+				{ type: 'image', url: 'https://platform.stability.ai/TSgRPCImageToImageResult.png', name: 'Image 1', attributes: { width: 600, height: 400 } },
+				{ type: 'video', url: '/video/auto-1.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1280x720' } },
 				{ type: 'audio', url: '/public/audio/mix.mp3', name: 'Audio 1', attributes: { duration: '2:30', bitrate: '128 kbps' } },
 			],
 		},
 		{
 			data: [
-				{ owner: 'Alan', date: '21/02/2024' },
+				{ owner: 'Alan', date: '21/02/2024', reward: '/img/reward/golden1.png' },
 				{ type: 'text', content: 'Try it out live by clicking the link below to open' },
-				{ type: 'image', url: 'https://platform.stability.ai/Inpainting-C4.png', name: 'Image 1', attributes: { width: 800, height: 600 } },
-				{ type: 'video', url: 'https://assets-global.website-files.com/64e7e7a96943ac108730fe86/64f121301d6331a3af814d1a_-f071-4683-a316-7e8eedfe14b3-transcode.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1920x1080' } },
+				{ type: 'image', url: 'https://platform.stability.ai/Inpainting-C4.png', name: 'Image 1', attributes: { width: 600, height: 400 } },
+				{ type: 'video', url: 'https://assets-global.website-files.com/64e7e7a96943ac108730fe86/64f121301d6331a3af814d1a_-f071-4683-a316-7e8eedfe14b3-transcode.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: ' 1280x720' } },
 				{ type: 'audio', url: 'https://example.com/audio1.mp3', name: 'Audio 1', attributes: { duration: '2:30', bitrate: '128 kbps' } },
 			],
 		},
 		{
 			data: [
-				{ owner: 'Alan', date: '21/02/2024' },
+				{ owner: 'Alan', date: '21/02/2024', reward: '/img/reward/golden3.png' },
 				{ type: 'text', content: 'Install the Stability SDK package..' },
-				{ type: 'image', url: 'https://platform.stability.ai/BasicPrompt.png', name: 'Image 1', attributes: { width: 800, height: 600 } },
-				{ type: 'video', url: '/video/auto-2.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1920x1080' } },
+				{ type: 'image', url: 'https://platform.stability.ai/BasicPrompt.png', name: 'Image 1', attributes: { width: 600, height: 400 } },
+				{ type: 'video', url: '/video/auto-2.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1280x720' } },
 				{ type: 'audio', url: 'https://example.com/audio1.mp3', name: 'Audio 1', attributes: { duration: '2:30', bitrate: '128 kbps' } },
 			],
 		},
 		{
 			data: [
-				{ owner: 'Alan', date: '21/02/2024' },
+				{ owner: 'Alan', date: '21/02/2024', reward: '/img/reward/silver1.png' },
 				{ type: 'text', content: 'This is not representative of all of the parameters available.' },
-				{ type: 'image', url: 'https://platform.stability.ai/CLIPGuidance-C1.png', name: 'Image 1', attributes: { width: 800, height: 600 } },
-				{ type: 'video', url: '/video/computer_vision.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1920x1080' } },
+				{ type: 'image', url: 'https://platform.stability.ai/CLIPGuidance-C1.png', name: 'Image 1', attributes: { width: 600, height: 400 } },
+				{ type: 'video', url: '/video/computer_vision.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1280x720' } },
 				{ type: 'audio', url: 'https://example.com/audio1.mp3', name: 'Audio 1', attributes: { duration: '2:30', bitrate: '128 kbps' } },
 			],
 		},
 		{
 			data: [
-				{ owner: 'Alan', date: '21/02/2024' },
+				{ owner: 'Alan', date: '21/02/2024', reward: '/img/reward/silver2.png' },
 				{ type: 'text', content: 'Learn how to create variants of generated images.' },
-				{ type: 'image', url: 'https://platform.stability.ai/CLIPGuidance-C2.png', name: 'Image 1', attributes: { width: 800, height: 600 } },
-				{ type: 'video', url: '/video/generic.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1920x1080' } },
+				{ type: 'image', url: 'https://platform.stability.ai/CLIPGuidance-C2.png', name: 'Image 1', attributes: { width: 600, height: 400 } },
+				{ type: 'video', url: '/video/generic.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1280x720' } },
 				{ type: 'audio', url: 'https://example.com/audio1.mp3', name: 'Audio 1', attributes: { duration: '2:30', bitrate: '128 kbps' } },
 			],
 		},
 		{
 			data: [
-				{ owner: 'Alan', date: '21/02/2024' },
+				{ owner: 'Alan', date: '21/02/2024', reward: '/img/reward/silver.png' },
 				{ type: 'text', content: 'Learn how to use multi-prompting and prompt weighting.' },
 				{ type: 'image', url: 'https://platform.stability.ai/python-sdk-dochead.png', name: 'Image 1', attributes: { width: 600, height: 400 } },
-				{ type: 'video', url: 'https://example.com/video1.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1920x1080' } },
+				{ type: 'video', url: 'https://example.com/video1.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1280x720' } },
 				{ type: 'audio', url: 'https://example.com/audio1.mp3', name: 'Audio 1', attributes: { duration: '2:30', bitrate: '128 kbps' } },
 			],
 		},
 		{
 			data: [
-				{ owner: 'Alan', date: '21/02/2024' },
+				{ owner: 'Alan', date: '21/02/2024', reward: '/img/reward/brozen.png' },
 				{ type: 'text', content: 'Learn how to upscale your images with our API.' },
-				{ type: 'image', url: 'https://platform.stability.ai/clip-guidance-dochead.png', name: 'Image 1', attributes: { width: 800, height: 600 } },
-				{ type: 'video', url: 'https://example.com/video1.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1920x1080' } },
+				{ type: 'image', url: 'https://platform.stability.ai/clip-guidance-dochead.png', name: 'Image 1', attributes: { width: 600, height: 400 } },
+				{ type: 'video', url: 'https://example.com/video1.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1280x720' } },
 				{ type: 'audio', url: 'https://example.com/audio1.mp3', name: 'Audio 1', attributes: { duration: '2:30', bitrate: '128 kbps' } },
 			],
 		},
 		{
 			data: [
-				{ owner: 'Alan', date: '21/02/2024' },
+				{ owner: 'Alan', date: '21/02/2024', reward: '/img/reward/brozen1.png' },
 				{ type: 'text', content: 'Learn how to create animations with our API.' },
-				{ type: 'image', url: 'https://platform.stability.ai/variants-dochead.png', name: 'Image 1', attributes: { width: 800, height: 600 } },
-				{ type: 'video', url: 'https://example.com/video1.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1920x1080' } },
+				{ type: 'image', url: 'https://platform.stability.ai/variants-dochead.png', name: 'Image 1', attributes: { width: 600, height: 400 } },
+				{ type: 'video', url: 'https://example.com/video1.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1280x720' } },
 				{ type: 'audio', url: 'https://example.com/audio1.mp3', name: 'Audio 1', attributes: { duration: '2:30', bitrate: '128 kbps' } },
 			],
 		},
 		{
 			data: [
-				{ owner: 'Alan', date: '21/02/2024' },
+				{ owner: 'Alan', date: '21/02/2024', reward: '/img/reward/brozen2.png' },
 				{ type: 'text', content: 'Learn how to use CLIP to guide image generation.' },
-				{ type: 'image', url: 'https://platform.stability.ai/animation-dochead.png', name: 'Image 1', attributes: { width: 800, height: 600 } },
-				{ type: 'video', url: 'https://example.com/video1.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1920x1080' } },
+				{ type: 'image', url: 'https://platform.stability.ai/animation-dochead.png', name: 'Image 1', attributes: { width: 600, height: 400 } },
+				{ type: 'video', url: 'https://example.com/video1.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1280x720' } },
 				{ type: 'audio', url: 'https://example.com/audio1.mp3', name: 'Audio 1', attributes: { duration: '2:30', bitrate: '128 kbps' } },
 			],
 		},
@@ -173,7 +173,7 @@ export default function () {
 			<main
 				className={classNames(
 					classes.content,
-					"flex flex-col items-center justify-center my-auto "
+					"flex flex-col items-start justify-start my-auto "
 				)}
 			>
 				{/* <PolkadotWallet onModulesFetched={handleModulesFetched} /> */}

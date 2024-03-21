@@ -18,8 +18,19 @@ const AudioUpload: React.FC<AudioUploadProps> = ({ onUpload }) => {
     };
 
     return (
-        <div>
+        <div className='flex items-start flex-col justify-start'>
             <input type="file" accept="audio/*" onChange={handleFileChange} />
+            {
+                selectedFile && (
+                    <div className='mt-2'>
+                        <h2>Preview:</h2>
+                        <audio controls>
+                            <source src={URL.createObjectURL(selectedFile)} type={selectedFile.type} />
+                            Your browser does not support the audio tag.
+                        </audio>
+                    </div>
+                )
+            }
         </div>
     );
 };

@@ -34,6 +34,8 @@ import { projectId } from "../config";
 import { Provider } from 'react-redux';
 import { store } from '@/store/index';
 import './globals.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // const { chains, publicClient } = configureChains(
 //   [mainnet, polygon, optimism, arbitrum, base, zora, sepolia, goerli],
@@ -96,6 +98,7 @@ export default function RootLayout({
               {/* <Footer /> */}
             </ThemeProvider>
             </Provider>
+            <ToastContainer />
           {/* </RainbowKitProvider>
         </WagmiConfig> */}
       </body>

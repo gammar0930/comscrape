@@ -41,18 +41,23 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageSelect }) => {
     };
 
     return (
-        <div>
+        <div className='flex items-start flex-col'>
             <input type="file" accept="image/*" onChange={handleImageChange} />
-            {previewUrl && (
-                <div>
-                    <img src={previewUrl} alt="Preview" style={{ maxWidth: '100%', maxHeight: '200px' }} />
-                </div>
-            )}
-            {selectedImage && (
-                <div>
-                    <p>Selected Image: {selectedImage.name}</p>
-                </div>
-            )}
+            {
+                previewUrl && (
+                    <div>
+                        <img src={previewUrl} alt="Preview" style={{ maxWidth: '100%', maxHeight: '200px', marginTop: '0.5rem' }} />
+                    </div>
+                )
+            }
+
+            {
+                selectedImage && (
+                    <div>
+                        <p>Selected Image: {selectedImage.name}</p>
+                    </div>
+                )
+            }
         </div>
     );
 };

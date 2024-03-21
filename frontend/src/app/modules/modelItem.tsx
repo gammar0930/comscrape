@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from "next/image";
 
 interface TextModuleProps {
     content: string;
@@ -22,7 +23,7 @@ interface ImageModuleProps {
 const ImageModule: React.FC<ImageModuleProps> = ({ url, name, attributes }) => (
     <div>
         {/* <img src={url} alt={name} width={attributes.width || 0} height={attributes.height || 0} style={{ width: '500', height: '300' }} /> */}
-        <img src={url} alt={name} style={{ width: '250px', height: '250px' }} />
+        <img src={url} alt={name} style={{ width: '180px', height: '180px' }} />
     </div>
 );
 
@@ -111,9 +112,30 @@ interface ModuleTilePropsContainer {
 
 const ModuleTileProps: React.FC<ModuleTilePropsContainer> = ({ data }) => (
     <div>
-        {data.map((item: any, index: number) => (
-            <ModuleTile key={index} item={item} />
-        ))}
+
+        {
+            data.map((item: any, index: number) => (
+                <div className='flex flex-col'>
+
+                    <div className='flex items-center justify-center'>
+                        <div className='flex flex-col items-center justify-center'>
+                            <span className='dark:text-white'>
+                                {item.owner}
+                            </span>
+
+                            <span className='dark:text-white'>
+                                {item.date}
+                            </span>
+                        </div>
+
+                        {
+                            item.reward && <Image src={item.reward} alt="Commune Logo" className='flex rounded-md ml-4' width={100} height={100} />
+                        }
+                    </div>
+                    <ModuleTile key={index} item={item} />
+                </div>
+            ))
+        }
     </div>
 );
 
