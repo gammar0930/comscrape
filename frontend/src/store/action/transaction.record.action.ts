@@ -89,6 +89,8 @@ export const getModules = () => async (dispatch: any) => {
 
         const data = await res.json()
 
+        console.log('--------------This is the data from web server---------', data)
+
         if (data) {
             dispatch({ type: GET_MODULES_SUCCESS, payload: data })
         }

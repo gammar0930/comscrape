@@ -58,7 +58,7 @@ async def upload_files(
     image: UploadFile = File(...),
     audio: UploadFile = File(...),
     text: str = Form(...),
-    address: str = Form(...),
+    # address: str = Form(...),
 ):
     # Create an "uploads" folder if it doesn't exist
     upload_folder = "uploads"
@@ -73,7 +73,7 @@ async def upload_files(
     # get_image_video_text_embeddings(
     #     project_id, location, image_filename, video_filename, text
     # )
-
+    
     # Save video file
     with open(video_filename, "wb") as video_file:
         video_file.write(video.file.read())
@@ -91,7 +91,7 @@ async def upload_files(
 
     # Save data to database
     file_id = await save_file_data(
-        video_filename, image_filename, audio_filename, processed_text, address
+        video_filename, image_filename, audio_filename, processed_text
     )
 
     return JSONResponse(

@@ -19,7 +19,7 @@ async def save_file_data(
     image_filename: str,
     audio_filename: str,
     text_data: str,
-    address: str,
+    # address: str,
 ):
     try:
 
@@ -30,7 +30,7 @@ async def save_file_data(
             image_filename=image_filename,
             audio_filename=audio_filename,
             text_data=text_data,
-            wallet_address=address,
+            # wallet_address=address,
         )
 
         return await database.execute(query)

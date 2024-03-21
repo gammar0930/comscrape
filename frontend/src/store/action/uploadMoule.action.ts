@@ -2,7 +2,6 @@ import axios from "axios";
 import { UPLOAD_NEW_FILE_FAILED, UPLOAD_NEW_FILE_SUCCESS } from "./type";
 
 export const UploadData = (formData: FormData) => async (dispatch: any) => {
-    console.log('-----------we are here------------')
     // // Replace 'YOUR_UPLOAD_API_ENDPOINT' with your actual API endpoint for handling file uploads
     axios.post('http://localhost:8000/upload', formData, {
         headers: {
