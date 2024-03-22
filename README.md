@@ -34,7 +34,7 @@ Getting Started
 To get started with this project, follow the steps below:
 
 Install the dependencies:
-1. cd comai
+1. cd frontend
 2. npm install
 3. Run the development server:
 4. npm run dev
