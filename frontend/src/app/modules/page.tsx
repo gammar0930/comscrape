@@ -5,9 +5,14 @@ import { useEffect, useState } from "react";
 import ModulesService from "@/services/modules-service";
 import classes from "./modules.module.css";
 import SearchBar from "./components/search-bar";
-import ModuleTileProps from "./modelItem";
+import ModuleTileProps, { ModuleTile } from "./modelItem";
 import { useDispatch, useSelector } from "react-redux";
 import { API_URL, getModules } from "@/store/action/transaction.record.action";
+import SelectOptionComponent from "./dropdown";
+import { Modal } from "antd";
+import Loading from "./spin";
+import { distances } from "@/config";
+import Distances from "./distance";
 
 export default function () {
 
@@ -17,6 +22,11 @@ export default function () {
 	const [loadedModules, setLoadedModules] = useState<any[]>([]);
 	const [displayedModules, setDisplayedModules] = useState<any[]>([]);
 	const [filteredModules, setFilteredModules] = useState<any[]>([]);
+	const [selectedOptionValue, setSelectedOptionValue] = useState<string>()
+	const [showSelectedOptionValues, setShowSelectedOptionValues] = useState<any[]>([]);
+	const [isShowEmbeddingModule, setIsShowEmbeddingModule] = useState<boolean>(false);
+	const [isCalculating, setIsCalculating] = useState<boolean>(false)
+	const [showDiv, setShowDiv] = useState(false);
 
 	const dispatch = useDispatch<any>()
 
@@ -133,7 +143,7 @@ export default function () {
 				{ owner: 'Alan', date: '21/02/2024', reward: '/img/reward/silver.png' },
 				{ type: 'text', content: 'Learn how to use multi-prompting and prompt weighting.' },
 				{ type: 'image', url: 'https://platform.stability.ai/python-sdk-dochead.png', name: 'Image 1', attributes: { width: 600, height: 400 } },
-				{ type: 'video', url: 'https://example.com/video1.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1280x720' } },
+				{ type: 'video', url: '/video/01.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1280x720' } },
 				{ type: 'audio', url: 'https://example.com/audio1.mp3', name: 'Audio 1', attributes: { duration: '2:30', bitrate: '128 kbps' } },
 			],
 		},
@@ -142,7 +152,7 @@ export default function () {
 				{ owner: 'Alan', date: '21/02/2024', reward: '/img/reward/brozen.png' },
 				{ type: 'text', content: 'Learn how to upscale your images with our API.' },
 				{ type: 'image', url: 'https://platform.stability.ai/clip-guidance-dochead.png', name: 'Image 1', attributes: { width: 600, height: 400 } },
-				{ type: 'video', url: 'https://example.com/video1.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1280x720' } },
+				{ type: 'video', url: '/video/02.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1280x720' } },
 				{ type: 'audio', url: 'https://example.com/audio1.mp3', name: 'Audio 1', attributes: { duration: '2:30', bitrate: '128 kbps' } },
 			],
 		},
@@ -151,7 +161,7 @@ export default function () {
 				{ owner: 'Alan', date: '21/02/2024', reward: '/img/reward/brozen1.png' },
 				{ type: 'text', content: 'Learn how to create animations with our API.' },
 				{ type: 'image', url: 'https://platform.stability.ai/variants-dochead.png', name: 'Image 1', attributes: { width: 600, height: 400 } },
-				{ type: 'video', url: 'https://example.com/video1.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1280x720' } },
+				{ type: 'video', url: '/video/03.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1280x720' } },
 				{ type: 'audio', url: 'https://example.com/audio1.mp3', name: 'Audio 1', attributes: { duration: '2:30', bitrate: '128 kbps' } },
 			],
 		},
@@ -160,13 +170,109 @@ export default function () {
 				{ owner: 'Alan', date: '21/02/2024', reward: '/img/reward/brozen2.png' },
 				{ type: 'text', content: 'Learn how to use CLIP to guide image generation.' },
 				{ type: 'image', url: 'https://platform.stability.ai/animation-dochead.png', name: 'Image 1', attributes: { width: 600, height: 400 } },
-				{ type: 'video', url: 'https://example.com/video1.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1280x720' } },
+				{ type: 'video', url: '/video/04.mp4', name: 'Video 1', attributes: { duration: '3:45', resolution: '1280x720' } },
 				{ type: 'audio', url: 'https://example.com/audio1.mp3', name: 'Audio 1', attributes: { duration: '2:30', bitrate: '128 kbps' } },
 			],
 		},
 
-		// ... other elements in modelList
 	];
+
+	useEffect(() => {
+		if (selectedOptionValue) {
+			const selectedAssests = modelList.flatMap(model => model.data.filter(item => item.type === selectedOptionValue));
+			setShowSelectedOptionValues(selectedAssests);
+		}
+	}, [selectedOptionValue])
+
+	const ModuleComponent = modelList && modelList.length > 0 ? (
+		<ul className={classes.modulesList}>
+			{
+				modelList.map((module: any, i: number) => (
+					<div className="module-container w-[30%] rounded-lg border-solid dark:bg-[#1e2022] relative p-4 hover:scale-102" style={{ boxShadow: "rgba(0, 0, 0, 0.1) 0px 10px 6px 4px" }} key={i}>
+						<ModuleTileProps data={module.data} key={i} />
+					</div>
+				))
+			}
+		</ul>
+	) : (
+		<span>There is no data to display</span>
+	)
+
+	const FilteredComponent = showSelectedOptionValues && showSelectedOptionValues.length > 0 ? (
+		<ul className={classes.modulesList}>
+			{
+				showSelectedOptionValues.map((module: any, i: number) => (
+					<div className="module-container w-[30%] rounded-lg border-solid dark:bg-[#1e2022] relative p-4 hover:scale-102" style={{ boxShadow: "rgba(0, 0, 0, 0.1) 0px 10px 6px 4px" }} key={i}>
+						<ModuleTile item={module} />
+					</div>
+				))
+			}
+		</ul>
+	) : (
+		<span>There is no data to display</span>
+	)
+
+	const handleShowEnhance = () => {
+		setIsShowEmbeddingModule(true)
+	}
+
+	const handleCancel = () => {
+		setIsShowEmbeddingModule(false)
+	}
+
+	const handleOk = () => {
+		setIsCalculating(true)
+		setShowDiv(true)
+		setIsShowEmbeddingModule(false)
+	}
+
+	useEffect(() => {
+		// Set a timeout to hide the Loading component after 30 seconds
+		const timeout = setTimeout(() => {
+			setIsCalculating(false);
+		}, 5000); // 30 seconds
+
+		return () => clearTimeout(timeout);
+	}, []);
+
+	// useEffect(() => {
+	// 	if (!isCalculating) {
+	// 		setShowDiv(true);
+	// 	}
+	// }, [isCalculating]);
+
+	const handleShowResultCancel = () => {
+		setShowDiv(false)
+	}
+
+	const handleShowResultOk = () => {
+		setShowDiv(false)
+	}
+
+	const videoDistances = distances.videos.map(video => ({
+		id: video.id,
+		distance: video.distances.reduce((acc, val) => acc + val, 0)
+	}));
+
+	const sortedModelList = modelList.sort((a, b) => {
+		const sumDistanceA = a.data
+			.filter(item => item.type === 'video' && item.url)
+			.reduce((acc, video) => {
+				const id = parseInt(video.url?.split('/').pop()?.split('.')[0] ?? '');
+				const distance = videoDistances.find(item => item.id === id)?.distance ?? 0;
+				return acc + distance;
+			}, 0);
+
+		const sumDistanceB = b.data
+			.filter(item => item.type === 'video' && item.url)
+			.reduce((acc, video) => {
+				const id = parseInt(video.url?.split('/').pop()?.split('.')[0] ?? '');
+				const distance = videoDistances.find(item => item.id === id)?.distance ?? 0;
+				return acc + distance;
+			}, 0);
+
+		return sumDistanceA - sumDistanceB;
+	});
 
 	return (
 		<>
@@ -176,26 +282,39 @@ export default function () {
 					"flex flex-col items-start justify-start my-auto "
 				)}
 			>
-				{/* <PolkadotWallet onModulesFetched={handleModulesFetched} /> */}
-				<SearchBar
-					setSearchString={setSearchString}
-					searchString={searchString}
-				/>
+				<div className="flex items-center justify-center w-[92%] mx-auto">
+					<SelectOptionComponent setValue={setSelectedOptionValue} />
+					<SearchBar
+						setSearchString={setSearchString}
+						searchString={searchString}
+					/>
+					<button className="ml-4 dark:text-white border-[1px] rounded-md dark:border-white hover:scale-105" onClick={handleShowEnhance}>Embrace your individuality</button>
+
+				</div>
+
 				{
-					modelList && modelList.length > 0 ? (
-						<ul className={classes.modulesList}>
-							{
-								modelList.map((module: any, i: number) => (
-									<div className="module-container w-[30%] rounded-lg border-solid dark:bg-[#1e2022] relative p-4 hover:scale-102" style={{ boxShadow: "rgba(0, 0, 0, 0.1) 0px 10px 6px 4px" }} key={i}>
-										<ModuleTileProps data={module.data} key={i} />
-									</div>
-									// <ModuleTile key={module.data[0].owner} {...module.data} />
-								))
-							}
-						</ul>
-					) : (
-						<span>There is no data to display</span>
-					)}
+					selectedOptionValue ? FilteredComponent : ModuleComponent
+				}
+
+				{
+					isShowEmbeddingModule &&
+					<Modal title="Calculate video embeddings" open={isShowEmbeddingModule} onOk={handleOk} onCancel={handleCancel}>
+						Are you really want to Calculate video embeddings?
+						<br />
+						It might take some times.
+					</Modal>
+				}
+				{/* 
+				{
+					isCalculating && <Loading />
+				} */}
+
+				{
+					showDiv && <Modal title="Video embeddings" open={showDiv} onOk={handleShowResultOk} onCancel={handleShowResultCancel}>
+						<Distances videos={distances.videos} />
+					</Modal>
+				}
+
 			</main>
 		</>
 	);

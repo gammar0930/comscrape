@@ -4,6 +4,7 @@ from controller import save_address, save_file_data, get_file_by_id, get_all_fil
 from databases import Database
 import os
 from embedding import get_image_video_text_embeddings
+from huggingfaceembdeeing import sample_frame_indices
 from dotenv import load_dotenv
 from fastapi_sqlalchemy import DBSessionMiddleware, db
 from fastapi.middleware.cors import CORSMiddleware
@@ -72,10 +73,13 @@ async def upload_files(
     image_filename = os.path.join(upload_folder, image.filename)
     audio_filename = os.path.join(upload_folder, audio.filename)
 
-    # Example: Get embeddings using OpenAI API
-    # get_image_video_text_embeddings(
-    #     project_id, location, image_filename, video_filename, text
-    # )
+    # Get embeddings using OpenAI API
+    get_image_video_text_embeddings(
+        project_id, location, image_filename, video_filename, content
+    )
+
+    # calculate the video embeddings
+    sample_frame_indices(project_id, video_filename)
 
     # Save video file
     with open(video_filename, "wb") as video_file:

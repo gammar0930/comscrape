@@ -63,7 +63,7 @@ const AudioModule: React.FC<AudioModuleProps> = ({ url, name, attributes }) => (
     </div>
 );
 
-interface ModuleTileProps {
+export interface ModuleTileProps_1 {
     item: {
         type: string;
         content?: string | null | undefined;
@@ -79,7 +79,7 @@ interface ModuleTileProps {
     };
 }
 
-const ModuleTile: React.FC<ModuleTileProps> = ({ item }) => {
+export const ModuleTile: React.FC<ModuleTileProps_1> = ({ item }) => {
     let moduleContent;
 
     switch (item.type) {
@@ -112,10 +112,9 @@ interface ModuleTilePropsContainer {
 
 const ModuleTileProps: React.FC<ModuleTilePropsContainer> = ({ data }) => (
     <div>
-
         {
             data.map((item: any, index: number) => (
-                <div className='flex flex-col'>
+                <div className='flex flex-col' key={index}>
 
                     <div className='flex items-center justify-center'>
                         <div className='flex flex-col items-center justify-center'>
@@ -131,6 +130,7 @@ const ModuleTileProps: React.FC<ModuleTilePropsContainer> = ({ data }) => (
                         {
                             item.reward && <Image src={item.reward} alt="Commune Logo" className='flex rounded-md ml-4' width={100} height={100} />
                         }
+
                     </div>
                     <ModuleTile key={index} item={item} />
                 </div>
