@@ -110,7 +110,7 @@ interface ModuleTilePropsContainer {
     data: any;
 }
 
-const ModuleTileProps: React.FC<ModuleTilePropsContainer> = ({ data }) => (
+const ResultComponent: React.FC<ModuleTilePropsContainer> = ({ data }) => (
     <div>
         {
             data.map((item: any, index: number) => (
@@ -127,9 +127,9 @@ const ModuleTileProps: React.FC<ModuleTilePropsContainer> = ({ data }) => (
                             </span>
                         </div>
 
-                        {/* {
+                        {
                             item.reward && <Image src={item.reward} alt="Commune Logo" className='flex rounded-md ml-4' width={100} height={100} />
-                        } */}
+                        }
 
                     </div>
                     <ModuleTile key={index} item={item} />
@@ -139,4 +139,4 @@ const ModuleTileProps: React.FC<ModuleTilePropsContainer> = ({ data }) => (
     </div>
 );
 
-export default ModuleTileProps;
+export default ResultComponent;

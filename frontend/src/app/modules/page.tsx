@@ -13,6 +13,7 @@ import { Modal } from "antd";
 import Loading from "./spin";
 import { distances } from "@/config";
 import Distances from "./distance";
+import ResultComponent from "./ResultItem";
 
 export default function () {
 
@@ -27,6 +28,7 @@ export default function () {
 	const [isShowEmbeddingModule, setIsShowEmbeddingModule] = useState<boolean>(false);
 	const [isCalculating, setIsCalculating] = useState<boolean>(false)
 	const [showDiv, setShowDiv] = useState(false);
+	const [isShowResult, setIsShowResult] = useState(false)
 
 	const dispatch = useDispatch<any>()
 
@@ -198,6 +200,7 @@ export default function () {
 		<span>There is no data to display</span>
 	)
 
+
 	const FilteredComponent = showSelectedOptionValues && showSelectedOptionValues.length > 0 ? (
 		<ul className={classes.modulesList}>
 			{
@@ -246,7 +249,7 @@ export default function () {
 	}
 
 	const handleShowResultOk = () => {
-		setShowDiv(false)
+		setIsShowResult(true)
 	}
 
 	const videoDistances = distances.videos.map(video => ({
@@ -274,6 +277,28 @@ export default function () {
 		return sumDistanceA - sumDistanceB;
 	});
 
+	const ShowResultComponent = sortedModelList && sortedModelList.length > 0 ? (
+		<ul className={classes.modulesList}>
+			{
+				sortedModelList.map((module: any, i: number) => (
+					<div className="module-container w-[30%] rounded-lg border-solid dark:bg-[#1e2022] relative p-4 hover:scale-102" style={{ boxShadow: "rgba(0, 0, 0, 0.1) 0px 10px 6px 4px" }} key={i}>
+						<ResultComponent data={module.data} key={i} />
+					</div>
+				))
+			}
+		</ul>
+	) : (
+		<span>There is no data to display</span>
+	)
+
+	useEffect(() => {
+
+		if (isShowResult) {
+
+		}
+
+	}, [isShowResult])
+
 	return (
 		<>
 			<main
@@ -288,30 +313,50 @@ export default function () {
 						setSearchString={setSearchString}
 						searchString={searchString}
 					/>
-					<button className="ml-4 dark:text-white border-[1px] rounded-md dark:border-white hover:scale-105" onClick={handleShowEnhance}>Embrace your individuality</button>
+					{
+						selectedOptionValue && <button className="ml-4 dark:text-white border-[1px] rounded-md dark:border-white" onClick={handleShowEnhance}>Embrace your individuality</button>
+					}
+
 
 				</div>
 
 				{
-					selectedOptionValue ? FilteredComponent : ModuleComponent
+					isShowResult ? ShowResultComponent : (selectedOptionValue ? FilteredComponent : ModuleComponent)
 				}
 
 				{
 					isShowEmbeddingModule &&
-					<Modal title="Calculate video embeddings" open={isShowEmbeddingModule} onOk={handleOk} onCancel={handleCancel}>
+					<Modal title="Calculate video embeddings" open={isShowEmbeddingModule} onOk={handleOk} onCancel={handleCancel} footer={null}>
 						Are you really want to Calculate video embeddings?
 						<br />
 						It might take some times.
+
+						<div className="flex">
+							<div className='mr-2 ml-auto rounded-lg shadow-lg hover:shadow-2xl text-center duration-200 justify-center px-2 py-2 border-blue-500 border-[1px] cursor-pointer' onClick={handleCancel}>
+								Cancel
+							</div>
+							<div className='bg-blue-700 rounded-lg shadow-lg hover:shadow-2xl text-center hover:bg-blue-600 duration-200 text-white hover:text-white justify-center px-2 py-2 hover:border-blue-300 cursor-pointer' onClick={handleOk}>
+								OK
+							</div>
+						</div>
+
 					</Modal>
 				}
-				{/* 
-				{
-					isCalculating && <Loading />
-				} */}
 
 				{
-					showDiv && <Modal title="Video embeddings" open={showDiv} onOk={handleShowResultOk} onCancel={handleShowResultCancel}>
+					showDiv &&
+					<Modal title="Video embeddings" open={showDiv} onOk={handleShowResultOk} onCancel={handleShowResultCancel} footer={null}>
+
 						<Distances videos={distances.videos} />
+
+						<div className="flex">
+							<div className='mr-2 ml-auto rounded-lg shadow-lg hover:shadow-2xl text-center duration-200 justify-center px-2 py-2 border-blue-500 border-[1px] cursor-pointer' onClick={handleCancel}>
+								Cancel
+							</div>
+							<div className='bg-blue-700 rounded-lg shadow-lg hover:shadow-2xl text-center hover:bg-blue-600 duration-200 text-white hover:text-white justify-center px-2 py-2 hover:border-blue-300 cursor-pointer' onClick={handleShowResultOk}>
+								OK
+							</div>
+						</div>
 					</Modal>
 				}
 

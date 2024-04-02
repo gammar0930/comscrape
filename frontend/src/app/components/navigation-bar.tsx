@@ -9,9 +9,8 @@ import ActiveLink from "./active-link";
 import { Dropdown, Modal, Space, Select } from 'antd';
 import Image from "next/image";
 // import { ConnectButton } from '@rainbow-me/rainbowkit';
-import MetaMaskImage from '../../../public/svg/metamask.svg'
-import axios from "axios";
 import Logo from "../../../public/svg/commune.svg";
+import PolkadotWallet from "@/components/modal/polkadot-login-button";
 
 export default function NavigationBar() {
 
@@ -20,7 +19,7 @@ export default function NavigationBar() {
     const [amount, setAmount] = React.useState('')
     const [tokenType, setTokenType] = React.useState('')
     const [selectedChain, setSelectedChain] = React.useState('')
-    const [isShowConnectWithSubstrateModalOpen, setIsShowConnectWithSubstrateModalOpen] = React.useState(false)
+    const [isPolkadotWalletOpen, setIsShowPolkadotWalletModalOpen] = React.useState<boolean>(false)
 
 
     const handleWalletPaymentModalOpen = () => {
@@ -54,6 +53,14 @@ export default function NavigationBar() {
             console.log(`Connected to chain ${chain} using ${nodeName}`);
         }
     };
+
+    const handleComwalletLogin = () => {
+        setIsShowPolkadotWalletModalOpen(true)
+    }
+
+    const handleLoginWalletCancel = () => {
+        setIsShowPolkadotWalletModalOpen(false)
+    }
 
     return (
         <nav aria-label="Main" className={classes.navbar}>
@@ -127,12 +134,14 @@ export default function NavigationBar() {
                 </div>
 
                 <ActiveLink activeClassName={classes.activeDocs} className={classNames(classes.item, classes.docs)} href="/docs/introduction">📚 Docs</ActiveLink> */}
+                <div className=' mr-2 bg-blue-700 rounded-lg shadow-lg hover:shadow-2xl text-center hover:bg-blue-600 duration-200 text-white p-2 hover:text-white font-sans justify-center px-1 py-1 hover:border-blue-300 hover:border-solid cursor-pointer' onClick={handleComwalletLogin}>
+                    Login with Comwallet
+                </div>
 
                 <div className={classes.themeTogglerWrapper}>
                     <ThemeToggler />
                 </div>
             </div>
-
 
             {
                 isShowWalletPaymentModal
@@ -154,7 +163,6 @@ export default function NavigationBar() {
                                         { value: 'matic', label: 'MATIC' },
                                         { value: 'usdt', label: 'USDT' },
                                         { value: 'usdc', label: 'USDC' },
-                                        // { value: 'bitcoin', label: 'BTC' },
                                     ]}
                                 />
                             </Space>
@@ -165,6 +173,13 @@ export default function NavigationBar() {
                     </div>
                 </Modal>
             }
+
+            {
+                isPolkadotWalletOpen && <Modal open={isPolkadotWalletOpen} onCancel={handleLoginWalletCancel} footer={null} >
+                    <PolkadotWallet />
+                </Modal>
+            }
+
         </nav>
     );
 }
